@@ -1,26 +1,15 @@
 import { Container, Toolbar, Divider, Button, Typography } from "@mui/material";
 
-import { makeStyles } from "@mui/styles";
+
 import { useNavigate } from "react-router-dom";
-const useStyles = makeStyles(() => ({
-  title: {
-    flexGrow: 1,
-  },
-  toolbar: {
-    justifyContent: "space-between",
-    backgroundColor:"#a8dadc"
-  },
-  icon: {
-    color: "white", 
-  },
-}));
+
 
 
 
 
 
 export default function Navbar() {
-  const classes = useStyles();
+  
 
 
 const navigate=useNavigate()
@@ -37,9 +26,9 @@ const navigate=useNavigate()
 
   return (
     <Container>
-      <Toolbar className={classes.toolbar}>
+      <Toolbar style={{display:"flex",justifyContent:"space-between", alignItems:"center"}} >
         
-        <Typography variant="h6" className={classes.title} color="inherit">
+        <Typography variant="h6"  color="inherit">
           Auth Demo
         </Typography>
 
