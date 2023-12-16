@@ -1,4 +1,92 @@
 
+// import { useDispatch, useSelector } from "react-redux";
+// import { SignUpApi } from "../Redux/Slices/AuthSlice";
+// import { Grid, Paper, Typography, Avatar, TextField, Button, Container } from "@mui/material";
+// import AddCircleOutlineOutlinedIcon from "@mui/icons-material/AddCircleOutlineOutlined";
+// import { useState } from "react";
+// import { useNavigate, Link } from "react-router-dom";
+// import { ToastContainer, toast } from 'react-toastify';
+// import 'react-toastify/dist/ReactToastify.css';
+
+// export default function SignUp() {
+//   const navigate = useNavigate();
+//   const dispatch = useDispatch();
+
+//   const paperStyle = {
+//     padding: '30px 20px',
+//     width: 300,
+//     margin: "20px auto",
+//   };
+
+//   const headerStyle = {
+//     margin: 0,
+//   };
+
+//   const avatarStyle = {
+//     backgroundColor: "#1bbd7e",
+//   };
+
+//   const [authstate, setAuthstate] = useState({
+//     username: "",
+//     email: "",
+//     password: "",
+//     contact: "",
+//     address: "",
+//   });
+
+//   const { onLoad } = useSelector((state) => state.Auth);
+
+//   const handelChange = (e) => {
+//     const { name, value } = e.target;
+//     setAuthstate({ ...authstate, [name]: value });
+//   };
+
+//   const notifySuccess = () => toast.success("Account created successfully!");
+//   const notifyError = (message) => toast.error(message);
+
+//   const handelSubmit = async (e) => {
+//     e.preventDefault();
+//     const dataToEncrypt = {
+//       username: authstate.username,
+//       email: authstate.email,
+//       password: authstate.password,
+//       contact: authstate.contact,
+//       address: authstate.address,
+//     };
+
+//     if (dataToEncrypt?.email && dataToEncrypt?.password && dataToEncrypt?.username && dataToEncrypt?.contact && dataToEncrypt?.address) {
+//       try {
+//         const data= await dispatch(SignUpApi(dataToEncrypt));
+//         console.log("signup data",data)
+//         if (data?.payload?.success === true) {
+//           // Notify success and navigate to login page
+//           notifySuccess();
+//           navigate("/login");
+//         } else {
+//           // Notify error with the message received from the API
+//           notifyError(data?.payload?.message);
+//         }
+//       } catch (error) {
+//         // Notify error if there's an exception during the API call
+//         notifyError("Error creating account. Please try again.");
+//       }
+//     } else {
+//       // Notify error if not all required details are filled in
+//       notifyError("Fill in all details");
+//     }
+//   };
+ 
+//     const [isEmailValid, setIsEmailValid] = useState(true);
+  
+//     const validateEmail = () => {
+//       const isValid = /\S+@\S+\.\S+/.test(authstate.email);
+//       setIsEmailValid(isValid);
+//       if (!isValid) {
+//         notifyError("Enter a valid email address");
+//       }
+//     };
+
+
 import { useDispatch, useSelector } from "react-redux";
 import { SignUpApi } from "../Redux/Slices/AuthSlice";
 import { Grid, Paper, Typography, Avatar, TextField, Button, Container } from "@mui/material";
@@ -11,6 +99,20 @@ import 'react-toastify/dist/ReactToastify.css';
 export default function SignUp() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
+
+  const [authstate, setAuthstate] = useState({
+    username: "",
+    email: "",
+    password: "",
+    confirmPassword: "", // Added confirm password field
+    contact: "",
+    address: "",
+  });
+
+  const [isEmailValid, setIsEmailValid] = useState(true);
+  const [passwordsMatch, setPasswordsMatch] = useState(true);
+
+  const { onLoad } = useSelector((state) => state.Auth);
 
   const paperStyle = {
     padding: '30px 20px',
@@ -26,19 +128,25 @@ export default function SignUp() {
     backgroundColor: "#1bbd7e",
   };
 
-  const [authstate, setAuthstate] = useState({
-    username: "",
-    email: "",
-    password: "",
-    contact: "",
-    address: "",
-  });
-
-  const { onLoad } = useSelector((state) => state.Auth);
-
   const handelChange = (e) => {
     const { name, value } = e.target;
     setAuthstate({ ...authstate, [name]: value });
+  };
+
+  const validateEmail = () => {
+    const isValid = /\S+@\S+\.\S+/.test(authstate.email);
+    setIsEmailValid(isValid);
+    if (!isValid) {
+      notifyError("Enter a valid email address");
+    }
+  };
+
+  const validatePasswords = () => {
+    const match = authstate.password === authstate.confirmPassword;
+    setPasswordsMatch(match);
+    if (!match) {
+      notifyError("Passwords do not match");
+    }
   };
 
   const notifySuccess = () => toast.success("Account created successfully!");
@@ -46,6 +154,10 @@ export default function SignUp() {
 
   const handelSubmit = async (e) => {
     e.preventDefault();
+
+    // Validate passwords before hitting the API
+    validatePasswords();
+
     const dataToEncrypt = {
       username: authstate.username,
       email: authstate.email,
@@ -54,40 +166,30 @@ export default function SignUp() {
       address: authstate.address,
     };
 
-    if (dataToEncrypt?.email && dataToEncrypt?.password && dataToEncrypt?.username && dataToEncrypt?.contact && dataToEncrypt?.address) {
+    if (
+      dataToEncrypt.email &&
+      dataToEncrypt.password &&
+      dataToEncrypt.username &&
+      dataToEncrypt.contact &&
+      dataToEncrypt.address &&
+      passwordsMatch // Check if passwords match
+    ) {
       try {
-        const data= await dispatch(SignUpApi(dataToEncrypt));
-        console.log("signup data",data)
+        const data = await dispatch(SignUpApi(dataToEncrypt));
+        console.log("signup data", data);
         if (data?.payload?.success === true) {
-          // Notify success and navigate to login page
           notifySuccess();
           navigate("/login");
         } else {
-          // Notify error with the message received from the API
           notifyError(data?.payload?.message);
         }
       } catch (error) {
-        // Notify error if there's an exception during the API call
         notifyError("Error creating account. Please try again.");
       }
     } else {
-      // Notify error if not all required details are filled in
       notifyError("Fill in all details");
     }
   };
- 
-    const [isEmailValid, setIsEmailValid] = useState(true);
-  
-    const validateEmail = () => {
-      const isValid = /\S+@\S+\.\S+/.test(authstate.email);
-      setIsEmailValid(isValid);
-      if (!isValid) {
-        notifyError("Enter a valid email address");
-      }
-    };
-
-
-
   return (
     <>
     <Container maxWidth="lg" style={{display:"flex",justifyContent:"center", alignItems:"center", height: "100vh",}}>
@@ -147,6 +249,20 @@ export default function SignUp() {
               value={authstate.password}
               onChange={handelChange}
             />
+             <TextField
+        fullWidth
+        required
+        placeholder="Confirm Password"
+        id="standard-basic"
+        label="Confirm Password"
+        type="password"
+        variant="standard"
+        name="confirmPassword"
+        value={authstate.confirmPassword}
+        onChange={handelChange}
+        onBlur={validatePasswords} // Trigger validation onBlur
+        error={!passwordsMatch}
+      />
             <TextField
               fullWidth
               required
