@@ -1,7 +1,7 @@
 
 import { useDispatch, useSelector } from "react-redux";
 import { SignUpApi } from "../Redux/Slices/AuthSlice";
-import { Grid, Paper, Typography, Avatar, TextField, Button } from "@mui/material";
+import { Grid, Paper, Typography, Avatar, TextField, Button, Container } from "@mui/material";
 import AddCircleOutlineOutlinedIcon from "@mui/icons-material/AddCircleOutlineOutlined";
 import { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
@@ -72,6 +72,9 @@ export default function SignUp() {
 
   return (
     <>
+    <Container maxWidth="lg" style={{display:"flex",justifyContent:"center", alignItems:"center", height: "100vh",}}>
+      
+ 
       <Grid container justifyContent="center">
         <Paper elevation={20} style={paperStyle}>
           <Grid align="center">
@@ -165,6 +168,7 @@ export default function SignUp() {
           </Typography>
         </Paper>
       </Grid>
+      </Container>
       <ToastContainer position="top-right" autoClose={5000} />
     </>
   );

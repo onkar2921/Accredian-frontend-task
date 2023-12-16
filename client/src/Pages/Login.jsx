@@ -9,7 +9,7 @@ import {
   Avatar,
   TextField,
   Button,
-  IconButton,
+  IconButton, Container,
 } from "@mui/material";
 
 import { Fingerprint } from "@mui/icons-material";
@@ -76,7 +76,9 @@ export default function Login() {
 
   return (
     <>
-    
+      <Container maxWidth="lg" style={{display:"flex",justifyContent:"center", alignItems:"center", height: "100vh",}}>
+        
+     
       <Grid container alignContent="center" justifyContent="center">
         <Paper elevation={20} style={paperStyle}>
           <Grid align="center">
@@ -137,6 +139,7 @@ export default function Login() {
           </Typography>
         </Paper>
       </Grid>
+      </Container>
       <ToastContainer position="top-right" autoClose={5000} />
     </>
   );

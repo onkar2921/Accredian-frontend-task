@@ -1,5 +1,6 @@
 import { useDispatch, useSelector } from "react-redux";
 import { GetUserDataApi } from "../Redux/Slices/AuthSlice";
+
 import Navbar from "../Components/Navbar";
 import Container from "@mui/material/Container";
 import {
@@ -65,6 +66,16 @@ export default function Home() {
       />
     </Grid>
     <Grid item xs={12} md={6}>
+      {/* loading */}{
+        state.Auth.loading && (
+          <>
+          <Grid style={{ width: "100%",display:"flex",justifyContent:"center", alignItems:"center" }}>
+            <CircularProgress />
+
+          </Grid>
+          </>
+        )
+      }
       {state?.Auth?.userName && (
         <Card style={cardStyle}>
           <CardContent style={contentStyle}>
