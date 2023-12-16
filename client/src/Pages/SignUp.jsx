@@ -56,19 +56,37 @@ export default function SignUp() {
 
     if (dataToEncrypt?.email && dataToEncrypt?.password && dataToEncrypt?.username && dataToEncrypt?.contact && dataToEncrypt?.address) {
       try {
-       const data= await dispatch(SignUpApi(dataToEncrypt));
-       if(data){
+        const data= await dispatch(SignUpApi(dataToEncrypt));
+        console.log("signup data",data)
+        if (data?.payload?.success === true) {
+          // Notify success and navigate to login page
           notifySuccess();
           navigate("/login");
-
+        } else {
+          // Notify error with the message received from the API
+          notifyError(data?.payload?.message);
         }
       } catch (error) {
+        // Notify error if there's an exception during the API call
         notifyError("Error creating account. Please try again.");
       }
     } else {
+      // Notify error if not all required details are filled in
       notifyError("Fill in all details");
     }
   };
+ 
+    const [isEmailValid, setIsEmailValid] = useState(true);
+  
+    const validateEmail = () => {
+      const isValid = /\S+@\S+\.\S+/.test(authstate.email);
+      setIsEmailValid(isValid);
+      if (!isValid) {
+        notifyError("Enter a valid email address");
+      }
+    };
+
+
 
   return (
     <>
@@ -104,19 +122,20 @@ export default function SignUp() {
               value={authstate?.username}
               onChange={handelChange}
             />
-            <TextField
-              fullWidth
-              placeholder="Enter Your Email"
-              required
-              id="standard-basic"
-              label="Email"
-              variant="standard"
-              type="email"
-              name="email"
-              value={authstate.email}
-              onChange={handelChange}
-            />
-            <TextField
+                <TextField
+        fullWidth
+        placeholder="Enter Your Email"
+        required
+        id="standard-basic"
+        label="Email"
+        variant="standard"
+        type="email"
+        name="email"
+        value={authstate.email}
+        onChange={handelChange}
+        onBlur={validateEmail} 
+        error={!isEmailValid}
+      />    <TextField
               fullWidth
               required
               placeholder="Enter Your Password"

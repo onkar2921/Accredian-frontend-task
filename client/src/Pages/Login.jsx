@@ -74,6 +74,17 @@ export default function Login() {
     }
   };
 
+  
+  const [isEmailValid, setIsEmailValid] = useState(true);
+  
+  const validateEmail = () => {
+    const isValid = /\S+@\S+\.\S+/.test(authstate.email);
+    setIsEmailValid(isValid);
+    if (!isValid) {
+      notifyError("Enter a valid email address");
+    }
+  };
+
   return (
     <>
       <Container maxWidth="lg" style={{display:"flex",justifyContent:"center", alignItems:"center", height: "100vh",}}>
@@ -97,18 +108,20 @@ export default function Login() {
 
           {/* form */}
           <form>
-            <TextField
-              fullWidth
-              placeholder="Enter Your Email"
-              required
-              id="standard-basic"
-              label="Email"
-              type="email"
-              variant="standard"
-              name="email"
-              value={authstate.email}
-              onChange={handelChange}
-            />
+          <TextField
+        fullWidth
+        placeholder="Enter Your Email"
+        required
+        id="standard-basic"
+        label="Email"
+        variant="standard"
+        type="email"
+        name="email"
+        value={authstate.email}
+        onChange={handelChange}
+        onBlur={validateEmail} 
+        error={!isEmailValid}
+      /> 
             <TextField
               fullWidth
               required
