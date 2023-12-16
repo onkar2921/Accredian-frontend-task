@@ -1,92 +1,3 @@
-
-// import { useDispatch, useSelector } from "react-redux";
-// import { SignUpApi } from "../Redux/Slices/AuthSlice";
-// import { Grid, Paper, Typography, Avatar, TextField, Button, Container } from "@mui/material";
-// import AddCircleOutlineOutlinedIcon from "@mui/icons-material/AddCircleOutlineOutlined";
-// import { useState } from "react";
-// import { useNavigate, Link } from "react-router-dom";
-// import { ToastContainer, toast } from 'react-toastify';
-// import 'react-toastify/dist/ReactToastify.css';
-
-// export default function SignUp() {
-//   const navigate = useNavigate();
-//   const dispatch = useDispatch();
-
-//   const paperStyle = {
-//     padding: '30px 20px',
-//     width: 300,
-//     margin: "20px auto",
-//   };
-
-//   const headerStyle = {
-//     margin: 0,
-//   };
-
-//   const avatarStyle = {
-//     backgroundColor: "#1bbd7e",
-//   };
-
-//   const [authstate, setAuthstate] = useState({
-//     username: "",
-//     email: "",
-//     password: "",
-//     contact: "",
-//     address: "",
-//   });
-
-//   const { onLoad } = useSelector((state) => state.Auth);
-
-//   const handelChange = (e) => {
-//     const { name, value } = e.target;
-//     setAuthstate({ ...authstate, [name]: value });
-//   };
-
-//   const notifySuccess = () => toast.success("Account created successfully!");
-//   const notifyError = (message) => toast.error(message);
-
-//   const handelSubmit = async (e) => {
-//     e.preventDefault();
-//     const dataToEncrypt = {
-//       username: authstate.username,
-//       email: authstate.email,
-//       password: authstate.password,
-//       contact: authstate.contact,
-//       address: authstate.address,
-//     };
-
-//     if (dataToEncrypt?.email && dataToEncrypt?.password && dataToEncrypt?.username && dataToEncrypt?.contact && dataToEncrypt?.address) {
-//       try {
-//         const data= await dispatch(SignUpApi(dataToEncrypt));
-//         console.log("signup data",data)
-//         if (data?.payload?.success === true) {
-//           // Notify success and navigate to login page
-//           notifySuccess();
-//           navigate("/login");
-//         } else {
-//           // Notify error with the message received from the API
-//           notifyError(data?.payload?.message);
-//         }
-//       } catch (error) {
-//         // Notify error if there's an exception during the API call
-//         notifyError("Error creating account. Please try again.");
-//       }
-//     } else {
-//       // Notify error if not all required details are filled in
-//       notifyError("Fill in all details");
-//     }
-//   };
- 
-//     const [isEmailValid, setIsEmailValid] = useState(true);
-  
-//     const validateEmail = () => {
-//       const isValid = /\S+@\S+\.\S+/.test(authstate.email);
-//       setIsEmailValid(isValid);
-//       if (!isValid) {
-//         notifyError("Enter a valid email address");
-//       }
-//     };
-
-
 import { useDispatch, useSelector } from "react-redux";
 import { SignUpApi } from "../Redux/Slices/AuthSlice";
 import { Grid, Paper, Typography, Avatar, TextField, Button, Container } from "@mui/material";
@@ -104,7 +15,7 @@ export default function SignUp() {
     username: "",
     email: "",
     password: "",
-    confirmPassword: "", // Added confirm password field
+    confirmPassword: "", 
     contact: "",
     address: "",
   });
@@ -172,7 +83,7 @@ export default function SignUp() {
       dataToEncrypt.username &&
       dataToEncrypt.contact &&
       dataToEncrypt.address &&
-      passwordsMatch // Check if passwords match
+      passwordsMatch 
     ) {
       try {
         const data = await dispatch(SignUpApi(dataToEncrypt));
@@ -260,7 +171,7 @@ export default function SignUp() {
         name="confirmPassword"
         value={authstate.confirmPassword}
         onChange={handelChange}
-        onBlur={validatePasswords} // Trigger validation onBlur
+        onBlur={validatePasswords} 
         error={!passwordsMatch}
       />
             <TextField
